@@ -78,7 +78,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table('1: Buy peacock feathers')
         #There is a unique url
         edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url, '/lists./+')
+        self.assertRegex(edith_list_url, '/lists/.+')
 
         #A new user wants to start a todo list
         #There is a new browser session to make sure old info doesn't come through
@@ -92,7 +92,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('make a fly', page_text)
         #frances enters new item to start new list.
         inputbox = self.browser.find_element_by_id('id_new_item')
-        input.send_keys('Buy milk')
+        inputbox.send_keys('Buy milk')
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')
 
