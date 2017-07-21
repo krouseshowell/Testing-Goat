@@ -39,6 +39,24 @@ class NewVisitorTest(LiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+    def test_layout_and_styling(self):
+        # Edith goes to the home page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # She notices the input box is nicely centered
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
+        #the imput in the new list is also centered
+        inputbox.send_keys('testing')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: testing')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width']/2, 512, delta = 10)
     def test_can_start_a_list_for_one_user(self):
         #goes to homepage
         self.browser.get(self.live_server_url)
@@ -96,9 +114,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')
 
-        #Remember!, finish the test
-        self.fail('Finish the test!')
-
         #Frances gets her own url
         frencis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url, edith_list_url)
@@ -106,8 +121,9 @@ class NewVisitorTest(LiveServerTestCase):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
-            #
 
+#Remember!, finish the test
+self.fail('Finish the test!')
 
 
 
