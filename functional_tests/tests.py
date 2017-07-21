@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -20,7 +20,7 @@ def wait_for_row_in_list_table(self, row_text):
                 time.sleep(0.5)
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         #start the browser
         self.browser = webdriver.Firefox()
@@ -115,15 +115,16 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table('1: Buy milk')
 
         #Frances gets her own url
-        frencis_list_url = self.browser.current_url
-        self.assertRegex(francis_list_url, edith_list_url)
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
         #no trace of edith's list
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
 
-#Remember!, finish the test
-self.fail('Finish the test!')
+    #Remember!, finish the test
+        self.fail('Finish the test!')
 
 
 
