@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 from selenium.common.exceptions import WebDriverException
+import os
 
 MAX_WAIT = 10
 
@@ -24,6 +25,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         #start the browser
         self.browser = webdriver.Firefox()
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
     def tearDown(self):
         #close the browser
         self.browser.quit()
@@ -122,29 +126,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
-
-    #Remember!, finish the test
-        self.fail('Finish the test!')
-
-
-
-    # She is invited to enter a to-do item straight away
-
-    # She types "Buy peacock feathers" into a text box (Edith's hobby
-    # is tying fly-fishing lures)
-
-# When she hits enter, the page updates, and now the page lists
-# "1: Buy peacock feathers" as an item in a to-do list
-
-# There is still a text box inviting her to add another item. She
-# enters "Use peacock feathers to make a fly" (Edith is very methodical)
-
-# The page updates again, and now shows both items on her list
-
-# Edith wonders whether the site will remember her list. Then she sees
-# that the site has generated a unique URL for her -- there is some
-# explanatory text to that effect.
-
-# She visits that URL - her to-do list is still there.
-
-# Satisfied, she goes back to sleep
